@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>The Power Place</title>
+<meta name="description" content="The Power Place — a white-label energy marketplace built by Veritris Axiom. Reseller storefront first, provider network next, exchange API last." />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,380;9..144,460;9..144,560;9..144,680&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ TOKENS ============ */
+  :root {
+    --navy: #0B2239;
+    --teal: #1B7895;
+    --cyan: #0792C4;
+    --amber: #F28C28;
+    --ground: #EDF2F4;
+    --panel: #FFFFFF;
+    --panel-2: #E2EAED;
+    --ink: #0B2239;
+    --ink-soft: #37505F;
+    --mist: #5C7080;
+    --line: #C9D6DB;
+    --sky-top: #C9DEE6;
+    --sky-bot: #EDF2F4;
+    --ridge: #17384C;
+    --ridge-2: #244F66;
+    --shadow: 0 18px 40px -22px rgba(11,34,57,0.35);
+    --brand-navy: #0B2239;
+    --on-brand-navy: #EAF3F6;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --navy: #E7F1F5;
+      --teal: #6FC3DC;
+      --cyan: #52C4EE;
+      --amber: #FFA347;
+      --ground: #071019;
+      --panel: #0D1B27;
+      --panel-2: #122636;
+      --ink: #E7F1F5;
+      --ink-soft: #AFC7D2;
+      --mist: #7E96A3;
+      --line: #1E3646;
+      --sky-top: #0A1826;
+      --sky-bot: #071019;
+      --ridge: #0C2130;
+      --ridge-2: #0F2B3C;
+      --shadow: 0 18px 44px -18px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --navy: #E7F1F5;
+    --teal: #6FC3DC;
+    --cyan: #52C4EE;
+    --amber: #FFA347;
+    --ground: #071019;
+    --panel: #0D1B27;
+    --panel-2: #122636;
+    --ink: #E7F1F5;
+    --ink-soft: #AFC7D2;
+    --mist: #7E96A3;
+    --line: #1E3646;
+    --sky-top: #0A1826;
+    --sky-bot: #071019;
+    --ridge: #0C2130;
+    --ridge-2: #0F2B3C;
+    --shadow: 0 18px 44px -18px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: "Fraunces", Georgia, "Times New Roman", serif;
+    font-weight: 560;
+    text-wrap: balance;
+    margin: 0;
+    color: var(--navy);
+  }
+  a { color: inherit; }
+  .mono { font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 500;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 56px); }
+  img, canvas { max-width: 100%; display: block; }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+  /* ============ NAV ============ */
+  header.nav {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px clamp(20px, 5vw, 56px);
+    max-width: 1120px; margin: 0 auto;
+  }
+  .brand { display: flex; flex-direction: column; gap: 2px; }
+  .brand-name {
+    font-family: "Fraunces", serif;
+    font-weight: 560;
+    font-size: 1.18rem;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+  }
+  .brand-credit {
+    display: flex; align-items: center; gap: 6px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+  .brand-credit img { height: 12px; width: auto; opacity: 0.8; }
+  .nav-cta {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.8rem;
+    text-decoration: none;
+    background: var(--navy);
+    color: var(--ground);
+    padding: 9px 16px;
+    border-radius: 3px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  /* ============ HERO ============ */
+  .hero { position: relative; overflow: hidden; }
+  .hero-scene {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, var(--sky-top), var(--sky-bot) 78%);
+  }
+  #horizon { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; }
+  .hero-inner {
+    position: relative; z-index: 2;
+    padding: clamp(56px, 10vw, 112px) 0 clamp(120px, 16vw, 190px);
+  }
+  .hero-inner .eyebrow { margin-bottom: 18px; display: block; }
+  h1.headline {
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+    max-width: 17ch;
+  }
+  h1.headline em { font-style: normal; color: var(--cyan); }
+  .hero-sub {
+    margin-top: 22px;
+    max-width: 50ch;
+    font-size: clamp(1.02rem, 1.6vw, 1.2rem);
+    color: var(--ink-soft);
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.86rem;
+    padding: 13px 22px;
+    border-radius: 3px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--amber); color: #241000; box-shadow: var(--shadow); }
+  .btn-ghost { background: transparent; color: var(--navy); border-color: var(--line); }
+
+  /* ============ TICKER ============ */
+  .ticker-band {
+    position: relative; z-index: 3;
+    background: var(--brand-navy);
+    color: var(--on-brand-navy);
+    border-top: 1px solid color-mix(in srgb, var(--ridge) 60%, transparent);
+    overflow: hidden;
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: scrollTicker 34s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+  @keyframes scrollTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .tick {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 13px 30px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.84rem;
+    border-right: 1px solid rgba(237,242,244,0.14);
+    white-space: nowrap;
+  }
+  .tick .plan { color: var(--on-brand-navy); opacity: 0.72; }
+  .tick .rate { color: var(--amber); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .tick .delta-up::before { content: "▲ "; color: #7BC97B; }
+  .tick .delta-down::before { content: "▼ "; color: #F0776B; }
+
+  /* ============ SECTIONS ============ */
+  section { padding: clamp(56px, 8vw, 100px) 0; }
+  .section-head { max-width: 58ch; margin-bottom: clamp(36px, 5vw, 54px); }
+  .section-head h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin-top: 10px; }
+  .section-head p { color: var(--ink-soft); margin-top: 14px; font-size: 1.02rem; }
+
+  .status-strip {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+  .status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--amber); margin-top: 6px; flex: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--amber) 20%, transparent); }
+  .status-strip p { margin: 0; font-size: 0.95rem; color: var(--ink-soft); }
+  .status-strip strong { color: var(--navy); }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  @media (max-width: 860px) { .grid-3 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 28px 26px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .card .index { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--teal); font-weight: 500; }
+  .card h3 { font-size: 1.28rem; }
+  .card p { margin: 0; color: var(--ink-soft); font-size: 0.96rem; }
+  .card .module-tag {
+    margin-top: auto;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    color: var(--mist);
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+
+  /* ============ HOW IT WORKS ============ */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--panel);
+  }
+  @media (max-width: 860px) { .flow { grid-template-columns: 1fr; } }
+  .flow-step {
+    padding: 26px 22px;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .flow-step:last-child { border-right: none; }
+  @media (max-width: 860px) { .flow-step { border-right: none; border-bottom: 1px solid var(--line); } .flow-step:last-child { border-bottom: none; } }
+  .flow-step .n { font-family: "IBM Plex Mono", monospace; color: var(--cyan); font-size: 0.8rem; }
+  .flow-step h4 { font-family: "Fraunces", serif; font-weight: 540; font-size: 1.08rem; color: var(--navy); margin: 10px 0 8px; }
+  .flow-step p { margin: 0; font-size: 0.88rem; color: var(--ink-soft); }
+
+  /* ============ PROOF STRIP ============ */
+  .proof {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px;
+    padding: 34px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  @media (max-width: 700px) { .proof { grid-template-columns: 1fr 1fr; } }
+  .proof-num { font-family: "IBM Plex Mono", monospace; font-size: clamp(1.15rem, 2.4vw, 1.7rem); color: var(--navy); font-variant-numeric: tabular-nums; }
+  .proof-lbl { font-size: 0.82rem; color: var(--mist); margin-top: 4px; }
+
+  /* ============ CTA ============ */
+  .cta-panel {
+    background: var(--brand-navy);
+    color: var(--on-brand-navy);
+    border-radius: 10px;
+    padding: clamp(36px, 6vw, 60px);
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (max-width: 780px) { .cta-panel { grid-template-columns: 1fr; } }
+  .cta-panel h2 { color: var(--on-brand-navy); font-size: clamp(1.6rem, 3vw, 2.1rem); }
+  .cta-panel p { color: color-mix(in srgb, var(--on-brand-navy) 72%, transparent); margin-top: 14px; max-width: 42ch; }
+  .cta-form { display: flex; flex-direction: column; gap: 12px; }
+  .cta-form label { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in srgb, var(--on-brand-navy) 65%, transparent); }
+  .cta-form input, .cta-form select {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.95rem;
+    padding: 11px 12px;
+    border-radius: 4px;
+    border: 1px solid color-mix(in srgb, var(--on-brand-navy) 30%, transparent);
+    background: color-mix(in srgb, var(--brand-navy) 60%, black 6%);
+    color: var(--on-brand-navy);
+  }
+  .cta-form input::placeholder { color: color-mix(in srgb, var(--on-brand-navy) 45%, transparent); }
+  .cta-submit {
+    margin-top: 4px;
+    background: var(--amber);
+    color: #241000;
+    border: none;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.88rem;
+    padding: 13px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .cta-note { font-size: 0.78rem; color: color-mix(in srgb, var(--on-brand-navy) 55%, transparent); }
+  .cta-confirm { display: none; font-size: 0.92rem; }
+  .cta-confirm.show { display: block; }
+  .cta-form.hide { display: none; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 30px 0 50px;
+  }
+  .foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; align-items: flex-start; }
+  footer p { margin: 0; font-size: 0.8rem; color: var(--mist); max-width: 64ch; }
+  footer .foot-brand { font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; color: var(--ink-soft); white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-row">
+    <div class="brand">
+      <span class="brand-name">The Power Place</span>
+      <span class="brand-credit"><img src="data:image/jpeg;base64,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" alt="" /> Built by Veritris Axiom</span>
+    </div>
+    <a class="nav-cta" href="mailto:devdunham@gmail.com?subject=The%20Power%20Place%20%E2%80%94%20Early%20Access%20(Oklahoma)">Early access</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-scene"><canvas id="horizon" aria-hidden="true"></canvas></div>
+  <div class="wrap hero-inner">
+    <span class="eyebrow">White-label energy marketplace for resellers</span>
+    <h1 class="headline">Open <em>The Power Place</em> under your own name.</h1>
+    <p class="hero-sub">Built by Veritris Axiom, in the order a reseller actually needs it: a fully branded storefront first, a provider network to stock it next, and an exchange API wiring it all together — quietly, underneath — last. Oklahoma launches first.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="mailto:devdunham@gmail.com?subject=The%20Power%20Place%20%E2%80%94%20Early%20Access%20(Oklahoma)&body=I'd%20like%20an%20early%20look%20at%20The%20Power%20Place%20for%20Oklahoma.">Claim your storefront →</a>
+      <a class="btn btn-ghost" href="#how">See the build order</a>
+    </div>
+  </div>
+  <div class="ticker-band">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+</section>
+
+<main>
+  <section id="status">
+    <div class="wrap">
+      <div class="status-strip">
+        <span class="status-dot" aria-hidden="true"></span>
+        <p><strong>Where things stand:</strong> Oklahoma does not yet authorize residential retail electric choice — The Power Place is the storefront we're building ahead of it, running today on the same Axiom Exchange engine already live under Veritris Energy's Texas retail business. Rates on the ticker above are illustrative, not live offers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Build order</span>
+        <h2>Storefront first. Everything else is plumbing.</h2>
+        <p>The Power Place ships in the order a reseller actually needs it — a branded storefront your customers see, a provider network that stocks it, and an exchange API wiring it together underneath, built to eventually reach out to bigger networks.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <span class="index">FIRST — RESELLER STOREFRONT</span>
+          <h3>Storefront</h3>
+          <p>A fully branded shopping and enrollment flow — your name, your colors, your rate plans — dropped into your site or handed to customers as a hosted page. This is the only layer your customers ever see, so it ships first.</p>
+          <span class="module-tag">Runs on Axiom Retail</span>
+        </div>
+        <div class="card">
+          <span class="index">NEXT — PROVIDER NETWORK</span>
+          <h3>Provider Network</h3>
+          <p>Stock the storefront with your own supply, a partner REP, or the open Axiom network of plans from other providers — so there's something to sell the moment the storefront goes live.</p>
+          <span class="module-tag">Runs on Axiom Market</span>
+        </div>
+        <div class="card">
+          <span class="index">LAST — EXCHANGE API</span>
+          <h3>Exchange API</h3>
+          <p>The settlement and reconciliation backend underneath both — built to eventually interoperate with larger retail platforms such as Octopus Energy's Kraken. It ships last, once the storefront and provider layers are proven.</p>
+          <span class="module-tag">Runs on Axiom Exchange</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How it works</span>
+        <h2>From signed reseller to live storefront.</h2>
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <span class="n">Step 1</span>
+          <h4>Brand the storefront</h4>
+          <p>Send your logo, colors and plan names. This ships first because it's the whole product to your customers — everything behind it stays invisible.</p>
+        </div>
+        <div class="flow-step">
+          <span class="n">Step 2</span>
+          <h4>Stock it</h4>
+          <p>Connect your own supply, a partner REP, or the open Axiom provider network — pricing and eligibility flow through automatically either way.</p>
+        </div>
+        <div class="flow-step">
+          <span class="n">Step 3</span>
+          <h4>Wire the backend</h4>
+          <p>The exchange API settles and reconciles everything underneath, with a roadmap to plug into larger networks like Octopus Energy's Kraken. It ships last, once the first two layers are proven.</p>
+        </div>
+        <div class="flow-step">
+          <span class="n">Step 4</span>
+          <h4>Go live</h4>
+          <p>Launch to a pilot cohort under your own name, watch performance on the same dashboards Veritris Energy uses in Texas, then scale.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proof">
+    <div class="wrap">
+      <div class="proof">
+        <div>
+          <div class="proof-num">Storefront → Providers → Exchange</div>
+          <div class="proof-lbl">Build order, resellers first</div>
+        </div>
+        <div>
+          <div class="proof-num">$0</div>
+          <div class="proof-lbl">Upfront cost to a founding reseller</div>
+        </div>
+        <div>
+          <div class="proof-num">36<span class="mono" style="font-size:0.6em;">mo</span></div>
+          <div class="proof-lbl">Same contract term as Axiom ETRM Enterprise</div>
+        </div>
+        <div>
+          <div class="proof-num">TX → OK</div>
+          <div class="proof-lbl">Engine proven in ERCOT, launching next in Oklahoma</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <div class="wrap">
+      <div class="cta-panel">
+        <div>
+          <span class="eyebrow" style="color:var(--amber);">Founding reseller list</span>
+          <h2>Put your name on The Power Place.</h2>
+          <p>We're briefing a short list of co-ops, municipal utilities and energy marketers before anyone else sees this. Tell us who you are and we'll set up a storefront walkthrough.</p>
+        </div>
+        <div>
+          <form class="cta-form" id="ctaForm">
+            <div>
+              <label for="orgName">Organization</label>
+              <input id="orgName" type="text" placeholder="e.g. a co-op, marketer or utility" required />
+            </div>
+            <div>
+              <label for="orgEmail">Work email</label>
+              <input id="orgEmail" type="email" placeholder="you@organization.com" required />
+            </div>
+            <button class="cta-submit" type="submit">Claim early access</button>
+            <p class="cta-note">Opens your email client, addressed to Devon Dunham — nothing is sent from this page.</p>
+          </form>
+          <div class="cta-confirm" id="ctaConfirm">
+            <p style="color:var(--amber); font-family:'IBM Plex Mono',monospace;">✓ Draft ready</p>
+            <p style="margin-top:6px;">Your email client should now have a message addressed to <strong>devdunham@gmail.com</strong> — send it whenever you're ready.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <span class="foot-brand">THE POWER PLACE · BUILT BY VERITRIS AXIOM</span>
+    <p>Concept preview for internal and prospective-reseller discussion — not a live product. Oklahoma does not currently authorize residential retail electric choice; plan names and rates shown are illustrative demonstration data, not real offers. The Power Place is a white-label storefront: the branding shown here is illustrative and fully customizable by whoever licenses it. References to Octopus Energy's Kraken describe a target integration category for the exchange-API roadmap — no partnership with Octopus Energy or Kraken Technologies exists today. Companion to the 15-Year Business Plan and the Texas Market Entry Memo.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ---- Ticker content (illustrative only) ----
+  var ticks = [
+    { plan: "Fixed · 12-mo", rate: "9.8¢/kWh", dir: "down" },
+    { plan: "Fixed · 24-mo", rate: "10.1¢/kWh", dir: "up" },
+    { plan: "Indexed · monthly", rate: "8.7¢/kWh", dir: "down" },
+    { plan: "Green blend · 12-mo", rate: "10.4¢/kWh", dir: "up" },
+    { plan: "Co-op community rate", rate: "9.2¢/kWh", dir: "down" },
+    { plan: "Fixed · 36-mo", rate: "9.9¢/kWh", dir: "up" },
+    { plan: "Time-of-use", rate: "7.6¢/kWh off-peak", dir: "down" },
+    { plan: "Municipal standard", rate: "9.5¢/kWh", dir: "up" }
+  ];
+  var track = document.getElementById("tickerTrack");
+  function buildTicks() {
+    var frag = document.createDocumentFragment();
+    ticks.forEach(function (t) {
+      var el = document.createElement("span");
+      el.className = "tick";
+      el.innerHTML = '<span class="plan">' + t.plan + '</span><span class="rate delta-' + t.dir + '">' + t.rate + "</span>";
+      frag.appendChild(el);
+    });
+    return frag;
+  }
+  track.appendChild(buildTicks());
+  track.appendChild(buildTicks()); // duplicate for seamless loop
+
+  // ---- Horizon canvas: plains skyline with turbines + transmission towers ----
+  var canvas = document.getElementById("horizon");
+  var ctx = canvas.getContext("2d");
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var t0 = null;
+  var W, H, DPR;
+
+  function styleVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.parentElement.clientWidth;
+    H = canvas.parentElement.clientHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+
+  function drawTurbine(x, baseY, scale, spin) {
+    var ridge = styleVar("--ridge-2");
+    ctx.save();
+    ctx.translate(x, baseY);
+    ctx.scale(scale, scale);
+    ctx.strokeStyle = ridge;
+    ctx.fillStyle = ridge;
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-3, -86);
+    ctx.lineTo(3, -86);
+    ctx.closePath();
+    ctx.fill();
+    ctx.save();
+    ctx.translate(0, -86);
+    ctx.rotate(spin);
+    for (var i = 0; i < 3; i++) {
+      ctx.save();
+      ctx.rotate((i * 2 * Math.PI) / 3);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(4, -20, 2, -42);
+      ctx.quadraticCurveTo(0, -44, -2, -42);
+      ctx.quadraticCurveTo(-3, -18, 0, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+    ctx.beginPath();
+    ctx.arc(0, 0, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    ctx.restore();
+  }
+
+  function drawTower(x, baseY, scale) {
+    var ridge = styleVar("--ridge-2");
+    ctx.save();
+    ctx.translate(x, baseY);
+    ctx.scale(scale, scale);
+    ctx.strokeStyle = ridge;
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(-16, 0); ctx.lineTo(-4, -58);
+    ctx.moveTo(16, 0); ctx.lineTo(4, -58);
+    ctx.moveTo(-4, -58); ctx.lineTo(4, -58);
+    ctx.moveTo(-11, -22); ctx.lineTo(11, -22);
+    ctx.moveTo(-8, -40); ctx.lineTo(8, -40);
+    ctx.moveTo(-22, -58); ctx.lineTo(22, -58);
+    ctx.moveTo(-22, -58); ctx.lineTo(-4, -46);
+    ctx.moveTo(22, -58); ctx.lineTo(4, -46);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  var turbines = [
+    { x: 0.08, s: 0.7 }, { x: 0.22, s: 0.95 }, { x: 0.5, s: 0.6 },
+    { x: 0.66, s: 0.85 }, { x: 0.88, s: 0.55 }
+  ];
+  var towers = [ { x: 0.34, s: 0.8 }, { x: 0.78, s: 0.68 } ];
+
+  function frame(ts) {
+    if (t0 === null) t0 = ts;
+    var elapsed = reduceMotion ? 0 : (ts - t0) / 1000;
+    ctx.clearRect(0, 0, W, H);
+
+    var ridgeColor = styleVar("--ridge");
+    var baseY = H * 0.86;
+
+    // back ridge (flat plains line)
+    ctx.fillStyle = ridgeColor;
+    ctx.globalAlpha = 0.55;
+    ctx.beginPath();
+    ctx.moveTo(0, baseY + 10);
+    ctx.lineTo(0, H);
+    ctx.lineTo(W, H);
+    ctx.lineTo(W, baseY + 4);
+    for (var gx = 0; gx <= W; gx += 40) {
+      var yy = baseY + 6 + Math.sin(gx * 0.004 + 2) * 3;
+      ctx.lineTo(gx, yy);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // transmission towers
+    towers.forEach(function (tw) {
+      drawTower(tw.x * W, baseY + 6, tw.s);
+    });
+
+    // turbines with slow spin
+    turbines.forEach(function (tb, i) {
+      var spin = elapsed * (0.35 + i * 0.05);
+      drawTurbine(tb.x * W, baseY, tb.s, spin);
+    });
+
+    if (!reduceMotion) requestAnimationFrame(frame);
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+  requestAnimationFrame(frame);
+  if (reduceMotion) { setTimeout(function(){ frame(0); }, 30); }
+
+  // ---- CTA form: builds a mailto draft, no network call ----
+  var form = document.getElementById("ctaForm");
+  var confirm = document.getElementById("ctaConfirm");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var org = document.getElementById("orgName").value || "your organization";
+    var email = document.getElementById("orgEmail").value || "";
+    var subject = encodeURIComponent("The Power Place — Early Access (Oklahoma)");
+    var body = encodeURIComponent(
+      "Organization: " + org + "\nWork email: " + email + "\n\nWe'd like a walkthrough of The Power Place for Oklahoma."
+    );
+    window.location.href = "mailto:devdunham@gmail.com?subject=" + subject + "&body=" + body;
+    form.classList.add("hide");
+    confirm.classList.add("show");
+  });
+})();
+</script>
+</body>
+</html>
